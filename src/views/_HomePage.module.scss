@@ -1,0 +1,143 @@
+@import '../styles/variables';
+
+.home-page {
+  padding: $spacing-lg;
+}
+
+/* SEARCH */
+
+.search-bar {
+
+  &__input {
+    width: 100%;
+    padding: $spacing-md;
+    border-radius: $radius-md;
+    border: none;
+    background: $color-surface;
+    color: $color-text;
+  }
+
+}
+
+/* FILTER TABS */
+
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-md;
+  margin: $spacing-lg 0;
+
+  &__btn {
+    padding: 10px 24px;
+    border-radius: $radius-full;
+    background: #333;
+    color: #ccc;
+    border: none;
+    cursor: pointer;
+    transition: .3s;
+
+    &:hover {
+      background: #444;
+    }
+
+    &--active {
+      background: $color-primary;
+      color: white;
+    }
+  }
+}
+
+/* FILTER GRID */
+
+.filter-grid {
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $spacing-sm;
+
+  &__btn {
+
+    padding: 8px 16px;
+    border-radius: $radius-full;
+    border: none;
+    cursor: pointer;
+    background: #333;
+    color: #ccc;
+
+    &--active {
+      background: $color-primary;
+      color: white;
+    }
+
+  }
+}
+
+/* GENERAR COLORES AUTOMÁTICOS */
+
+@each $type, $colors in $type-colors {
+
+  $bg: nth($colors, 1);
+  $text: nth($colors, 2);
+
+  .filter-grid__btn--#{$type}:hover {
+    background: $bg;
+    color: $text;
+  }
+
+  .pokemon-card__type--#{$type} {
+    background: $bg;
+    color: $text;
+  }
+
+}
+
+/* GRID */
+
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: $spacing-lg;
+}
+
+/* CARD */
+
+.pokemon-card {
+
+  background: $color-surface;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  text-align: center;
+
+  &__id {
+    color: $color-text-muted;
+    font-size: .8rem;
+  }
+
+  &__image {
+    width: 120px;
+  }
+
+  &__name {
+    text-transform: capitalize;
+  }
+
+  &__types {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-sm;
+  }
+
+  &__type {
+    padding: 4px 10px;
+    border-radius: $radius-full;
+    font-size: .8rem;
+  }
+
+  &__region {
+    margin-top: $spacing-sm;
+    font-size: .75rem;
+    color: $color-text-muted;
+  }
+
+}

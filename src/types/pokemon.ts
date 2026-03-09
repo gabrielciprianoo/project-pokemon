@@ -35,12 +35,22 @@ export interface PokemonSprites {
 export interface Pokemon {
   id: number;
   name: string;
-  types: PokemonType[];
-  abilities: PokemonAbility[];
-  stats: PokemonStat[];
-  sprites: PokemonSprites;
   height: number;
   weight: number;
+  types: PokemonType[];
+  sprites: {
+    front_default: string;
+    other: {
+      'official-artwork': {
+        front_default: string;
+      };
+    };
+  };
+  species: {
+    name: string;
+    url: string;
+  };
+  region?: PokemonRegion; // Añadimos región opcional
 }
 
 export interface PokemonListItem {
@@ -59,3 +69,7 @@ export type PokemonTypeName =
   | 'normal' | 'fire' | 'water' | 'electric' | 'grass' | 'ice' 
   | 'fighting' | 'poison' | 'ground' | 'flying' | 'psychic' | 'bug' 
   | 'rock' | 'ghost' | 'dragon' | 'dark' | 'steel' | 'fairy';
+
+  export type PokemonRegion = 
+  | 'kanto' | 'johto' | 'hoenn' | 'sinnoh' | 'unova' 
+  | 'kalos' | 'alola' | 'galar' | 'paldea';

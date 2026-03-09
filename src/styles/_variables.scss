@@ -34,23 +34,25 @@ $radius-lg: 16px;
 $radius-full: 9999px;
 
 // ─── Pokemon Type Colors ─────────────────────────────────────────────────────
+// ─── Pokemon Type Colors ─────────────────────────────────────────────────────
+
 $type-colors: (
-  'normal':   (#A8A878, #1a1a1a),
-  'fire':     (#F08030, #ffffff),
-  'water':    (#6890F0, #ffffff),
-  'electric': (#F8D030, #1a1a1a),
-  'grass':    (#78C850, #1a1a1a),
-  'ice':      (#98D8D8, #1a1a1a),
-  'fighting': (#C03028, #ffffff),
-  'poison':   (#A040A0, #ffffff),
-  'ground':   (#E0C068, #1a1a1a),
-  'flying':   (#A890F0, #1a1a1a),
-  'psychic':  (#F85888, #1a1a1a),
-  'bug':      (#A8B820, #1a1a1a),
-  'rock':     (#B8A038, #1a1a1a),
-  'ghost':    (#705898, #ffffff),
-  'dragon':   (#7038F8, #ffffff),
-  'dark':     (#705848, #ffffff),
-  'steel':    (#B8B8D0, #1a1a1a),
-  'fairy':    (#EE99AC, #1a1a1a)
+  normal:   (#A8A878, #1a1a1a),
+  fire:     (#F08030, #ffffff),
+  water:    (#6890F0, #ffffff),
+  electric: (#F8D030, #1a1a1a),
+  grass:    (#78C850, #1a1a1a),
+  ice:      (#98D8D8, #1a1a1a),
+  fighting: (#C03028, #ffffff),
+  poison:   (#A040A0, #ffffff),
+  ground:   (#E0C068, #1a1a1a),
+  flying:   (#A890F0, #1a1a1a),
+  psychic:  (#F85888, #1a1a1a),
+  bug:      (#A8B820, #1a1a1a),
+  rock:     (#B8A038, #1a1a1a),
+  ghost:    (#705898, #ffffff),
+  dragon:   (#7038F8, #ffffff),
+  dark:     (#705848, #ffffff),
+  steel:    (#B8B8D0, #1a1a1a),
+  fairy:    (#EE99AC, #1a1a1a)
 );
