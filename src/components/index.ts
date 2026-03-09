@@ -10,3 +10,4 @@ export { default as StatList } from './molecules/StatList';
 
 export { default as PokemonInfoCard } from './organisms/PokemonInfoCard';
 export { default as StatsSection } from './organisms/StatsSection';
+export { default as PokemonCard } from './organisms/PokemonCard';

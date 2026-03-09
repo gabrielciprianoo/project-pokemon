@@ -1,0 +1,69 @@
+@use '../../../styles/variables' as *;
+
+.pokemon-card {
+  display: block;
+  text-decoration: none;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  &__content {
+    padding: $spacing-lg;
+    background: $color-surface;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__image-wrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: $radius-md;
+  }
+
+  &__info {
+    width: 100%;
+    text-align: center;
+  }
+
+  &__id {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    font-weight: 500;
+    display: block;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__name {
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $color-text;
+    text-transform: capitalize;
+    margin: 0 0 $spacing-sm;
+  }
+
+  &__types {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-sm;
+  }
+
+  @each $type in $types-list {
+    &--#{$type} {
+      .pokemon-card__content {
+        background: linear-gradient(135deg, rgba(map-get($type-colors, $type), 0.15), rgba(map-get($type-colors, $type), 0.05));
+        border: 1px solid rgba(map-get($type-colors, $type), 0.3);
+      }
+    }
+  }
+}
