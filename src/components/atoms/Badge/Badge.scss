@@ -1,0 +1,32 @@
+@use '../../../styles/variables' as *;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &--default {
+    background: rgba(255, 255, 255, 0.1);
+    color: $color-text;
+  }
+
+  &--success {
+    background: rgba(76, 175, 80, 0.2);
+    color: #81c784;
+  }
+
+  &--warning {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffd54f;
+  }
+
+  &--info {
+    background: rgba(33, 150, 243, 0.2);
+    color: #64b5f6;
+  }
+}

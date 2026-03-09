@@ -1,0 +1,30 @@
+@use '../../../styles/variables' as *;
+
+.ability-list {
+  &__title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 $spacing-sm 0;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__name {
+    color: $color-text;
+    text-transform: capitalize;
+    font-weight: 500;
+  }
+}

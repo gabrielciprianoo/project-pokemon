@@ -1,0 +1,71 @@
+@use '../variables' as *;
+
+// ─── Stat Bar ─────────────────────────────────────────────────────────────────
+
+.stat-bar {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  &__label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__name {
+    font-weight: 500;
+  }
+
+  &__value {
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__track {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: $radius-full;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: $radius-full;
+    transition: width 0.5s ease-out;
+    
+    &--normal { background: linear-gradient(90deg, #A8A77A, #C8C89E); }
+    &--fire { background: linear-gradient(90deg, #EE8130, #F5A962); }
+    &--water { background: linear-gradient(90deg, #6390F0, #8FB4F5); }
+    &--electric { background: linear-gradient(90deg, #F7D02C, #F9E35C); }
+    &--grass { background: linear-gradient(90deg, #7AC74C, #9DD67E); }
+    &--ice { background: linear-gradient(90deg, #96D9D6, #B8E4E2); }
+    &--fighting { background: linear-gradient(90deg, #C22E28, #D65A56); }
+    &--poison { background: linear-gradient(90deg, #A33EA1, #C26BBF); }
+    &--ground { background: linear-gradient(90deg, #E2BF65, #ECD28E); }
+    &--flying { background: linear-gradient(90deg, #A98FF3, #C5B0F7); }
+    &--psychic { background: linear-gradient(90deg, #F95587, #FB7DA0); }
+    &--bug { background: linear-gradient(90deg, #A6B91A, #C4D645); }
+    &--rock { background: linear-gradient(90deg, #B6A136, #D4BC5E); }
+    &--ghost { background: linear-gradient(90deg, #735797, #9478B5); }
+    &--dragon { background: linear-gradient(90deg, #6F35FC, #9661FF); }
+    &--dark { background: linear-gradient(90deg, #705746, #8F7968); }
+    &--steel { background: linear-gradient(90deg, #B7B7CE, #D4D4E5); }
+    &--fairy { background: linear-gradient(90deg, #D685AD, #E5A5C8); }
+  }
+
+  &--small {
+    .stat-bar__track {
+      height: 6px;
+    }
+  }
+
+  &--large {
+    .stat-bar__track {
+      height: 12px;
+    }
+  }
+}
