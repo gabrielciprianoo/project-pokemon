@@ -1,0 +1,49 @@
+@use '../variables' as *;
+@use 'sass:color';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  font-weight: 400;
+
+  color: $color-text;
+  background-color: $color-bg;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+a {
+  font-weight: 500;
+  color: $color-secondary;
+  text-decoration: none;
+
+  &:hover {
+    color: color.adjust($color-secondary, $lightness: 15%);
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

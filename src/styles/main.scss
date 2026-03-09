@@ -1,0 +1,9 @@
+// ─── Entry point ──────────────────────────────────────────────────────────────
+// Order matters: variables & mixins first (no output), then base, then components/utilities.
+
+@use 'variables';
+@use 'mixins';
+
+@use 'base';
+@use 'components';
+@use 'utilities';

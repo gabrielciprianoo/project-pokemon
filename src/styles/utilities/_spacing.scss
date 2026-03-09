@@ -1,0 +1,26 @@
+@use '../variables' as *;
+
+$spacings: (
+  'xs':  $spacing-xs,
+  'sm':  $spacing-sm,
+  'md':  $spacing-md,
+  'lg':  $spacing-lg,
+  'xl':  $spacing-xl,
+  '2xl': $spacing-2xl,
+);
+
+@each $name, $value in $spacings {
+  .mt-#{$name} { margin-top:    $value; }
+  .mb-#{$name} { margin-bottom: $value; }
+  .ml-#{$name} { margin-left:   $value; }
+  .mr-#{$name} { margin-right:  $value; }
+  .mx-#{$name} { margin-left:   $value; margin-right:  $value; }
+  .my-#{$name} { margin-top:    $value; margin-bottom: $value; }
+
+  .pt-#{$name} { padding-top:    $value; }
+  .pb-#{$name} { padding-bottom: $value; }
+  .pl-#{$name} { padding-left:   $value; }
+  .pr-#{$name} { padding-right:  $value; }
+  .px-#{$name} { padding-left:   $value; padding-right:  $value; }
+  .py-#{$name} { padding-top:    $value; padding-bottom: $value; }
+}

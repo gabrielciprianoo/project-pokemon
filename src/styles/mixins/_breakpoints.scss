@@ -1,0 +1,20 @@
+@use '../variables' as *;
+
+/// Responsive mixin — mobile first
+/// @example @include respond-to(md) { ... }
+@mixin respond-to($bp) {
+  $breakpoints: (
+    'sm': $bp-sm,
+    'md': $bp-md,
+    'lg': $bp-lg,
+    'xl': $bp-xl,
+  );
+
+  @if map-has-key($breakpoints, $bp) {
+    @media (min-width: map-get($breakpoints, $bp)) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint `#{$bp}` not found. Available: #{map-keys($breakpoints)}";
+  }
+}
