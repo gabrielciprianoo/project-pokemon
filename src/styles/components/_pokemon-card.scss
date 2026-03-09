@@ -1,65 +1,82 @@
 @use '../variables' as *;
-@use '../mixins/breakpoints' as *;
 
 .pokemon-card {
-  background-color: $color-surface;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
   border-radius: $radius-lg;
-  padding: $spacing-md;
+  padding: 20px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  position: relative;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(255, 83, 80, 0.3);
+  }
+
+  &__id {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.85rem;
+    color: $color-text-muted;
+    font-weight: 600;
   }
 
   &__image {
     width: 120px;
     height: 120px;
     object-fit: contain;
-    margin-bottom: $spacing-sm;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover &__image {
+    transform: scale(1.1);
   }
 
   &__name {
-    font-size: 18px;
-    font-weight: 700;
-    color: $color-text;
+    color: #fff;
+    margin: 12px 0 8px;
     text-transform: capitalize;
-    margin-bottom: $spacing-xs;
+    font-size: 1.3rem;
   }
 
   &__types {
     display: flex;
     justify-content: center;
-    gap: $spacing-xs;
+    gap: $spacing-sm;
+    margin-bottom: 12px;
   }
 
   &__type {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 2px 8px;
+    padding: 4px 12px;
     border-radius: $radius-full;
-    text-transform: capitalize;
-    color: #1a1a1a;
-
-    &--normal { background-color: #A8A878; }
-    &--fire { background-color: #F08030; }
-    &--water { background-color: #6890F0; }
-    &--electric { background-color: #F8D030; }
-    &--grass { background-color: #78C850; }
-    &--ice { background-color: #98D8D8; }
-    &--fighting { background-color: #C03028; }
-    &--poison { background-color: #A040A0; }
-    &--ground { background-color: #E0C068; }
-    &--flying { background-color: #A890F0; }
-    &--psychic { background-color: #F85888; }
-    &--bug { background-color: #A8B820; }
-    &--rock { background-color: #B8A038; }
-    &--ghost { background-color: #705898; }
-    &--dragon { background-color: #7038F8; }
-    &--dark { background-color: #705848; }
-    &--steel { background-color: #B8B8D0; }
-    &--fairy { background-color: #EE99AC; }
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
   }
+
+  &__stats {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+    color: #aaa;
+    font-size: 0.85rem;
+  }
+
+  @each $type, $colors in $type-colors {
+    &__type--#{$type} {
+      background: nth($colors, 1);
+      color: nth($colors, 2);
+    }
+  }
+}
+
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  max-width: 1200px;
+  margin: 0 auto;
 }
