@@ -1,5 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { Pokemon, PokemonListItem, PokemonTypeName } from '../types/pokemon';
+// Importar los estilos (dependiendo de la opción que elijas)
+import styles from './HomePage.module.scss'; // Para módulos CSS
+// O simplemente: import './HomePage.css'; // Para CSS plano
 
 const POKEAPI_BASE = 'https://pokeapi.co/api/v2';
 
@@ -139,147 +142,6 @@ export default function HomePage() {
           </div>
         ))}
       </div>
-
-      <style>{`
-        .pokemon-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-          gap: 24px;
-          padding: 24px;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-
-        .pokemon-card {
-          background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-          border-radius: 16px;
-          padding: 20px;
-          text-align: center;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-          cursor: pointer;
-          position: relative;
-        }
-
-        .pokemon-card:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 12px 30px rgba(255, 83, 80, 0.3);
-        }
-
-        .pokemon-card__id {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-          font-size: 0.85rem;
-          color: #888;
-          font-weight: 600;
-        }
-
-        .pokemon-card__image {
-          width: 120px;
-          height: 120px;
-          object-fit: contain;
-          transition: transform 0.3s ease;
-        }
-
-        .pokemon-card:hover .pokemon-card__image {
-          transform: scale(1.1);
-        }
-
-        .pokemon-card__name {
-          color: #fff;
-          margin: 12px 0 8px;
-          text-transform: capitalize;
-          font-size: 1.3rem;
-        }
-
-        .pokemon-card__types {
-          display: flex;
-          justify-content: center;
-          gap: 8px;
-          margin-bottom: 12px;
-        }
-
-        .pokemon-card__type {
-          padding: 4px 12px;
-          border-radius: 20px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          textTransform: uppercase;
-        }
-
-        .pokemon-card__type--fire { background: #ff6b6b; color: #fff; }
-        .pokemon-card__type--water { background: #4dabf7; color: #fff; }
-        .pokemon-card__type--grass { background: #69db7c; color: #1a1a1a; }
-        .pokemon-card__type--electric { background: #ffd43b; color: #1a1a1a; }
-        .pokemon-card__type--ice { background: #74c0fc; color: #1a1a1a; }
-        .pokemon-card__type--fighting { background: #fa5252; color: #fff; }
-        .pokemon-card__type--poison { background: #be4bdb; color: #fff; }
-        .pokemon-card__type--ground { background: #e67700; color: #fff; }
-        .pokemon-card__type--flying { background: #868e96; color: #1a1a1a; }
-        .pokemon-card__type--psychic { background: #f783ac; color: #1a1a1a; }
-        .pokemon-card__type--bug { background: #a9e34b; color: #1a1a1a; }
-        .pokemon-card__type--rock { background: #a78bfa; color: #fff; }
-        .pokemon-card__type--ghost { background: #845ef7; color: #fff; }
-        .pokemon-card__type--dragon { background: #5c7cfa; color: #fff; }
-        .pokemon-card__type--dark { background: #495057; color: #fff; }
-        .pokemon-card__type--steel { background: #adb5bd; color: #1a1a1a; }
-        .pokemon-card__type--fairy { background: #f783ac; color: #1a1a1a; }
-        .pokemon-card__type--normal { background: #ced4da; color: #1a1a1a; }
-
-        .pokemon-card__stats {
-          display: flex;
-          justify-content: center;
-          gap: 16px;
-          color: #aaa;
-          font-size: 0.85rem;
-        }
-
-        .search-bar__input {
-          padding: 12px 20px;
-          border-radius: 25px;
-          border: none;
-          background: #2a2a2a;
-          color: #fff;
-          font-size: 1rem;
-          width: 100%;
-          max-width: 400px;
-          outline: none;
-          transition: box-shadow 0.3s ease;
-        }
-
-        .search-bar__input:focus {
-          box-shadow: 0 0 0 3px rgba(255, 83, 80, 0.3);
-        }
-
-        .type-filter {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 8px;
-          margin-bottom: 24px;
-          padding: 0 16px;
-        }
-
-        .type-filter__btn {
-          padding: 8px 16px;
-          border-radius: 20px;
-          border: none;
-          cursor: pointer;
-          font-weight: 600;
-          transition: transform 0.2s ease;
-          background: #333;
-          color: #ccc;
-        }
-
-        .type-filter__btn:hover {
-          transform: scale(1.05);
-        }
-
-        .type-filter__btn--active {
-          background: #ff5350;
-          color: #fff;
-        }
-      `}</style>
 
       {filteredPokemons.length === 0 && (
         <p style={{ textAlign: 'center', color: '#888', padding: '2rem' }}>
