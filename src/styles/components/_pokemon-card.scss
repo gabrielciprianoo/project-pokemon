@@ -1,56 +1,114 @@
 @use '../variables' as *;
 
-// ─── Pokemon Card ────────────────────────────────────────────────────────────
-
 .pokemon-card {
-  background: $color-surface;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
   border-radius: $radius-lg;
-  padding: $spacing-lg;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
 
-  &--interactive {
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, $color-primary, $color-secondary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(255, 83, 80, 0.3);
+
+    &::before {
+      opacity: 1;
     }
   }
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: $spacing-md;
-  }
-
-  &__title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: $color-text;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  &__content {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
-  }
-
-  &__row {
-    display: flex;
-    align-items: center;
-    gap: $spacing-sm;
+  &__id {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.85rem;
     color: $color-text-muted;
-    font-size: 0.9rem;
+    font-weight: 600;
   }
 
-  &__value {
-    color: $color-text;
-    font-weight: 500;
-    text-transform: capitalize;
+  &__image {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
   }
+
+  &:hover &__image {
+    transform: scale(1.15) rotate(5deg);
+  }
+
+  &__name {
+    color: #fff;
+    margin: 12px 0 8px;
+    text-transform: capitalize;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+  }
+
+  &:hover &__name {
+    color: $color-accent;
+  }
+
+  &__types {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-sm;
+    margin-bottom: 12px;
+  }
+
+  &__type {
+    padding: 4px 12px;
+    border-radius: $radius-full;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &__stats {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+    color: #aaa;
+    font-size: 0.85rem;
+  }
+
+  @each $type, $colors in $type-colors {
+    &__type--#{$type} {
+      background: nth($colors, 1);
+      color: nth($colors, 2);
+    }
+  }
+}
+
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $spacing-lg;
+  padding: $spacing-lg;
+  max-width: 1200px;
+  margin: 0 auto;
 }

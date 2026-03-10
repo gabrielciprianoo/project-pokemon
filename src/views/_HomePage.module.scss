@@ -1,0 +1,211 @@
+@import '../styles/variables';
+
+.home-page {
+  padding: $spacing-lg;
+}
+
+/* SEARCH */
+
+.search-bar {
+
+  &__input {
+    width: 100%;
+    padding: $spacing-md;
+    border-radius: $radius-md;
+    border: 2px solid transparent;
+    background: $color-surface;
+    color: $color-text;
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: $color-text-muted;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 4px rgba(255, 83, 80, 0.2);
+      transform: translateY(-2px);
+    }
+
+    &:hover:not(:focus) {
+      background: lighten($color-surface, 5%);
+    }
+  }
+
+}
+
+/* FILTER TABS */
+
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-md;
+  margin: $spacing-lg 0;
+
+  &__btn {
+    padding: 10px 24px;
+    border-radius: $radius-full;
+    background: #333;
+    color: #ccc;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #444;
+      transform: translateY(-2px);
+    }
+
+    &--active {
+      background: $color-primary;
+      color: white;
+      box-shadow: 0 4px 12px rgba(204, 0, 0, 0.4);
+    }
+  }
+}
+
+/* FILTER GRID */
+
+.filter-grid {
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $spacing-sm;
+
+  &__btn {
+
+    padding: 8px 16px;
+    border-radius: $radius-full;
+    border: none;
+    cursor: pointer;
+    background: #333;
+    color: #ccc;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    &--active {
+      background: $color-primary;
+      color: white;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+
+  }
+}
+
+/* GENERAR COLORES AUTOMÁTICOS */
+
+@each $type, $colors in $type-colors {
+
+  $bg: nth($colors, 1);
+  $text: nth($colors, 2);
+
+  .filter-grid__btn--#{$type}:hover {
+    background: $bg;
+    color: $text;
+  }
+
+  .pokemon-card__type--#{$type} {
+    background: $bg;
+    color: $text;
+  }
+
+}
+
+/* GRID */
+
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: $spacing-lg;
+}
+
+/* CARD */
+
+.pokemon-card {
+
+  background: $color-surface;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, $color-primary, $color-secondary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(255, 83, 80, 0.3);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &__id {
+    color: $color-text-muted;
+    font-size: .8rem;
+  }
+
+  &__image {
+    width: 120px;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+
+  &:hover &__image {
+    transform: scale(1.15) rotate(5deg);
+  }
+
+  &__name {
+    text-transform: capitalize;
+    transition: color 0.3s ease;
+  }
+
+  &:hover &__name {
+    color: $color-accent;
+  }
+
+  &__types {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-sm;
+  }
+
+  &__type {
+    padding: 4px 10px;
+    border-radius: $radius-full;
+    font-size: .8rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &__region {
+    margin-top: $spacing-sm;
+    font-size: .75rem;
+    color: $color-text-muted;
+  }
+
+}

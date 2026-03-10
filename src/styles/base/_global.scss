@@ -27,12 +27,19 @@
 body {
   min-width: 320px;
   min-height: 100vh;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(204, 0, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(59, 76, 202, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 203, 5, 0.03) 0%, transparent 70%),
+    linear-gradient(180deg, $color-bg 0%, #0f0f1a 100%);
+  background-attachment: fixed;
 }
 
 a {
   font-weight: 500;
   color: $color-secondary;
   text-decoration: none;
+  transition: color 0.3s ease;
 
   &:hover {
     color: color.adjust($color-secondary, $lightness: 15%);
