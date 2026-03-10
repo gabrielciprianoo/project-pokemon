@@ -10,7 +10,9 @@ $color-text-muted: #888;
 
 // ─── Typography ───────────────────────────────────────────────────────────────
 $font-family-base: system-ui, Avenir, Helvetica, Arial, sans-serif;
+$font-size-sm:     12px;
 $font-size-base:   16px;
+$font-size-lg:     20px;
 $line-height-base: 1.5;
 
 // ─── Spacing ──────────────────────────────────────────────────────────────────
@@ -32,3 +34,50 @@ $radius-sm: 4px;
 $radius-md: 8px;
 $radius-lg: 16px;
 $radius-full: 9999px;
+
+// ─── Pokemon Types ──────────────────────────────────────────────────────────────
+$types-list: normal, fire, water, electric, grass, ice, fighting, poison, ground, flying, psychic, bug, rock, ghost, dragon, dark, steel, fairy;
+
+// ─── Pokemon Types Colors ─────────────────────────────────────────────────────
+$type-colors: (
+  normal:   #A8A878,
+  fire:     #F08030,
+  water:    #6890F0,
+  electric: #F8D030,
+  grass:    #78C850,
+  ice:      #98D8D8,
+  fighting: #C03028,
+  poison:   #A040A0,
+  ground:   #E0C068,
+  flying:   #A890F0,
+  psychic:  #F85888,
+  bug:      #A8B820,
+  rock:     #B8A038,
+  ghost:    #705898,
+  dragon:   #7038F8,
+  dark:     #705848,
+  steel:    #B8B8D0,
+  fairy:    #EE99AC
+);
+
+// ─── Pokemon Types Text Colors ────────────────────────────────────────────────
+$type-text-colors: (
+  normal:   #1a1a1a,
+  fire:     #fff,
+  water:    #fff,
+  electric: #1a1a1a,
+  grass:    #1a1a1a,
+  ice:      #1a1a1a,
+  fighting: #fff,
+  poison:   #fff,
+  ground:   #1a1a1a,
+  flying:   #fff,
+  psychic:  #fff,
+  bug:      #1a1a1a,
+  rock:     #fff,
+  ghost:    #fff,
+  dragon:   #fff,
+  dark:     #fff,
+  steel:    #1a1a1a,
+  fairy:    #1a1a1a
+);
