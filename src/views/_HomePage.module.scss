@@ -100,10 +100,9 @@
 
 /* GENERAR COLORES AUTOMÁTICOS */
 
-@each $type, $colors in $type-colors {
+@each $type, $bg in $type-colors {
 
-  $bg: nth($colors, 1);
-  $text: nth($colors, 2);
+  $text: map-get($type-text-colors, $type);
 
   .filter-grid__btn--#{$type}:hover {
     background: $bg;
