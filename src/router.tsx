@@ -1,11 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom'
 import PokemonDetailPage from './views/PokemonDetailPage'
 import NotFoundPage from './views/NotFoundPage'
+import HomePage from './views/HomePage'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <div>Pokédex - Home Page coming soon</div>,
+    element: <HomePage />,
   },
   {
     path: '/pokemon/:name',
