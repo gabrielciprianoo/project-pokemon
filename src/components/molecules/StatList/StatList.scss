@@ -1,0 +1,18 @@
+@use '../../../styles/variables' as *;
+
+.stat-list {
+  &__title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 $spacing-md 0;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+}
