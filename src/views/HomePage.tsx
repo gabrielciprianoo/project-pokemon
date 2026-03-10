@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import type {
   Pokemon,
   PokemonListItem,
@@ -120,6 +121,7 @@ async function fetchPokemonList(
 export default function HomePage() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -302,7 +304,11 @@ export default function HomePage() {
 
       <div className={styles["pokemon-grid"]}>
         {filteredPokemons.map((pokemon) => (
-          <div key={pokemon.id} className={styles["pokemon-card"]}>
+          <div
+            key={pokemon.id}
+            className={styles["pokemon-card"]}
+            onClick={() => navigate(`/pokemon/${pokemon.name}`)}
+          >
             <span className={styles["pokemon-card__id"]}>
               #{String(pokemon.id).padStart(3, "0")}
             </span>
