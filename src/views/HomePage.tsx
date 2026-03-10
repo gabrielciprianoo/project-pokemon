@@ -5,7 +5,7 @@ import type {
   PokemonTypeName,
   PokemonRegion,
   PokemonSpecies
-} from "../types/pokemon";
+}from "../types/pokemon";
 
 import styles from "./_HomePage.module.scss";
 

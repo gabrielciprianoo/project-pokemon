@@ -50,7 +50,7 @@ export interface Pokemon {
     name: string;
     url: string;
   };
-  region?: PokemonRegion; // Añadimos región opcional
+  region?: PokemonRegion;
 }
 
 export interface PokemonListItem {
@@ -73,3 +73,10 @@ export type PokemonTypeName =
   export type PokemonRegion = 
   | 'kanto' | 'johto' | 'hoenn' | 'sinnoh' | 'unova' 
   | 'kalos' | 'alola' | 'galar' | 'paldea';
+
+  export interface PokemonSpecies {
+  generation: {
+    name: string;
+    url: string;
+  };
+}
