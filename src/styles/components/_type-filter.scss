@@ -1,0 +1,69 @@
+@use '../variables' as *;
+
+.type-filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xl;
+
+  &__btn {
+    padding: $spacing-xs $spacing-md;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: $radius-full;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+    }
+
+    &:active::after {
+      width: 200px;
+      height: 200px;
+    }
+
+    &:hover {
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    &--active {
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+      transform: scale(1.05);
+    }
+
+    // Type colors
+    &--normal { background-color: #A8A878; color: #1a1a1a; }
+    &--fire { background-color: #F08030; color: #fff; }
+    &--water { background-color: #6890F0; color: #fff; }
+    &--electric { background-color: #F8D030; color: #1a1a1a; }
+    &--grass { background-color: #78C850; color: #1a1a1a; }
+    &--ice { background-color: #98D8D8; color: #1a1a1a; }
+    &--fighting { background-color: #C03028; color: #fff; }
+    &--poison { background-color: #A040A0; color: #fff; }
+    &--ground { background-color: #E0C068; color: #1a1a1a; }
+    &--flying { background-color: #A890F0; color: #fff; }
+    &--psychic { background-color: #F85888; color: #fff; }
+    &--bug { background-color: #A8B820; color: #1a1a1a; }
+    &--rock { background-color: #B8A038; color: #fff; }
+    &--ghost { background-color: #705898; color: #fff; }
+    &--dragon { background-color: #7038F8; color: #fff; }
+    &--dark { background-color: #705848; color: #fff; }
+    &--steel { background-color: #B8B8D0; color: #1a1a1a; }
+    &--fairy { background-color: #EE99AC; color: #1a1a1a; }
+  }
+}
