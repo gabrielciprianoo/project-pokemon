@@ -1,11 +1,7 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  usePokemonList,
-  usePokemonSearch,
-  usePokemonFilter,
-  useFilteredPokemons
-} from "../hooks";
+import { usePokemonStore } from "../hooks";
 import { POKEMON_TYPES } from "../constants/types";
 import { REGIONS, REGION_NAMES } from "../constants/regions";
 
@@ -13,23 +9,27 @@ import styles from "./_HomePage.module.scss";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { pokemons, loading, error } = usePokemonList();
-  const { searchTerm, setSearchTerm } = usePokemonSearch();
+  
   const {
-    selectedType,
-    toggleType,
-    selectedRegion,
-    toggleRegion,
-    activeFilter,
-    setActiveFilter
-  } = usePokemonFilter();
-
-  const filteredPokemons = useFilteredPokemons({
-    pokemons,
+    loading,
+    error,
     searchTerm,
-    selectedType,
-    selectedRegion
-  });
+    filter,
+    fetchPokemons,
+    setSearchTerm,
+    toggleType,
+    toggleRegion,
+    setActiveFilter,
+    getFilteredPokemons
+  } = usePokemonStore();
+
+  const { selectedType, selectedRegion, activeFilter } = filter;
+
+  useEffect(() => {
+    fetchPokemons();
+  }, [fetchPokemons]);
+
+  const filteredPokemons = getFilteredPokemons();
 
   if (loading) {
     return (

@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import type { Pokemon, PokemonListItem, PokemonRegion, PokemonSpecies } from "../types/pokemon";
 import { GENERATION_TO_REGION } from "../constants/regions";
-
-const POKEAPI_BASE = "https://pokeapi.co/api/v2";
+import apiClient from "../services/apiClient";
 
 async function fetchPokemonDetails(url: string): Promise<Pokemon> {
-  const response = await fetch(url);
-  return response.json();
+  const response = await apiClient.get(url);
+  return response.data;
 }
 
 async function fetchPokemonSpecies(url: string): Promise<PokemonSpecies> {
-  const response = await fetch(url);
-  return response.json();
+  const response = await apiClient.get(url);
+  return response.data;
 }
 
 async function fetchPokemonWithRegion(url: string): Promise<Pokemon> {
@@ -32,11 +31,11 @@ async function fetchPokemonList(
   offset: number = 0,
   limit: number = 500
 ): Promise<Pokemon[]> {
-  const response = await fetch(
-    `${POKEAPI_BASE}/pokemon?offset=${offset}&limit=${limit}`
+  const response = await apiClient.get(
+    `/pokemon?offset=${offset}&limit=${limit}`
   );
 
-  const data = await response.json();
+  const data = response.data;
 
   const detailedPromises = data.results.map((item: PokemonListItem) =>
     fetchPokemonWithRegion(item.url)

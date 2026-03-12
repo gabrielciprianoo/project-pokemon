@@ -1,3 +1,5 @@
+import apiClient from './apiClient';
+
 export interface PokemonType {
   type: {
     name: string;
@@ -38,14 +40,7 @@ export interface Pokemon {
   };
 }
 
-const BASE_URL = 'https://pokeapi.co/api/v2';
-
 export async function getPokemon(name: string): Promise<Pokemon> {
-  const response = await fetch(`${BASE_URL}/pokemon/${name.toLowerCase()}`);
-  
-  if (!response.ok) {
-    throw new Error(`Pokemon not found: ${name}`);
-  }
-  
-  return response.json();
+  const response = await apiClient.get(`/pokemon/${name.toLowerCase()}`);
+  return response.data;
 }
