@@ -1,6 +1,6 @@
 import * as v from "valibot";
 
-const PokemonTypeNameSchema = v.union([
+export const PokemonTypeNameSchema = v.union([
   v.literal("normal"),
   v.literal("fire"),
   v.literal("water"),
@@ -21,7 +21,7 @@ const PokemonTypeNameSchema = v.union([
   v.literal("fairy"),
 ]);
 
-const PokemonRegionSchema = v.union([
+export const PokemonRegionSchema = v.union([
   v.literal("kanto"),
   v.literal("johto"),
   v.literal("hoenn"),
@@ -42,26 +42,50 @@ const PokemonTypeSchema = v.object({
 });
 
 const PokemonSpritesSchema = v.object({
-  front_default: v.string(),
+  front_default: v.nullable(v.string()),
   other: v.object({
     "official-artwork": v.object({
-      front_default: v.string(),
+      front_default: v.nullable(v.string()),
     }),
   }),
 });
 
-export const PokemonSchema = v.object({
+const PokemonAbilitySchema = v.object({
+  ability: v.object({
+    name: v.string(),
+    url: v.string(),
+  }),
+  is_hidden: v.boolean(),
+  slot: v.number(),
+});
+
+const PokemonStatSchema = v.object({
+  base_stat: v.number(),
+  stat: v.object({
+    name: v.string(),
+    url: v.string(),
+  }),
+});
+
+// Campos comunes entre PokemonSchema y PokemonDetailSchema
+const PokemonBaseFields = {
   id: v.number(),
   name: v.string(),
   height: v.number(),
   weight: v.number(),
   types: v.array(PokemonTypeSchema),
   sprites: PokemonSpritesSchema,
-  species: v.object({
-    name: v.string(),
-    url: v.string(),
-  }),
+};
+
+export const PokemonSchema = v.object({
+  ...PokemonBaseFields,
   region: v.optional(PokemonRegionSchema),
+});
+
+export const PokemonDetailSchema = v.object({
+  ...PokemonBaseFields,
+  abilities: v.array(PokemonAbilitySchema),
+  stats: v.array(PokemonStatSchema),
 });
 
 export const PokemonListItemSchema = v.object({
@@ -69,24 +93,8 @@ export const PokemonListItemSchema = v.object({
   url: v.string(),
 });
 
-export const SearchTermSchema = v.pipe(
-  v.string(),
-  v.minLength(0),
-  v.maxLength(50)
-);
-
-export function validatePokemon(data: unknown) {
-  return v.parse(PokemonSchema, data);
-}
-
-export function validateSearchTerm(data: unknown) {
-  return v.parse(SearchTermSchema, data);
-}
-
-export function safeValidatePokemon(data: unknown) {
-  return v.safeParse(PokemonSchema, data);
-}
-
-export function safeValidateSearchTerm(data: unknown) {
-  return v.safeParse(SearchTermSchema, data);
-}
+export type PokemonTypeName = v.InferOutput<typeof PokemonTypeNameSchema>;
+export type PokemonRegion = v.InferOutput<typeof PokemonRegionSchema>;
+export type Pokemon = v.InferOutput<typeof PokemonSchema>;
+export type PokemonDetail = v.InferOutput<typeof PokemonDetailSchema>;
+export type PokemonListItem = v.InferOutput<typeof PokemonListItemSchema>;
