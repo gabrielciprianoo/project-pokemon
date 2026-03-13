@@ -1,0 +1,29 @@
+@import '../../../styles/variables';
+
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-md;
+  margin: $spacing-lg 0;
+
+  &__btn {
+    padding: 10px 24px;
+    border-radius: $radius-full;
+    background: #333;
+    color: #ccc;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #444;
+      transform: translateY(-2px);
+    }
+
+    &--active {
+      background: $color-primary;
+      color: white;
+      box-shadow: 0 4px 12px rgba(204, 0, 0, 0.4);
+    }
+  }
+}

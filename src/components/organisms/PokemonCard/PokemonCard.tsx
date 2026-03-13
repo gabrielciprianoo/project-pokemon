@@ -1,35 +1,34 @@
-import { Link } from 'react-router-dom';
-import { PokemonImage, PokemonType } from '../../atoms';
-import type { Pokemon } from '../../../services/pokemonApi';
-import './PokemonCard.scss';
+import { Link } from "react-router-dom";
+import { PokemonImage, PokemonType } from "../../atoms";
+import { usePokemonDetail } from "../../../hooks";
+import { getSpriteUrl } from "../../../services/pokemonApi";
+import type { PokemonListEntry } from "../../../services/pokemonApi";
+import "./PokemonCard.scss";
 
-interface PokemonCardProps {
-  pokemon: Pokemon;
-}
+export default function PokemonCard({ id, name }: PokemonListEntry) {
+  const { data: pokemon } = usePokemonDetail(name);
 
-export default function PokemonCard({ pokemon }: PokemonCardProps) {
-  const types = pokemon.types.map(t => t.type.name);
-  const imageUrl = pokemon.sprites.other['official-artwork'].front_default;
+  const types = pokemon?.types.map((t) => t.type.name) ?? [];
+  const primaryType = types[0];
 
   return (
-    <Link 
-      to={`/pokemon/${pokemon.name}`} 
-      className={`pokemon-card pokemon-card--${types[0]}`}
+    <Link
+      to={`/pokemon/${name}`}
+      className={`pokemon-card ${primaryType ? `pokemon-card--${primaryType}` : ""}`}
     >
       <div className="pokemon-card__content">
         <div className="pokemon-card__image-wrapper">
-          <PokemonImage 
-            name={pokemon.name} 
-            image={imageUrl}
-          />
+          <PokemonImage name={name} image={getSpriteUrl(id)} />
         </div>
         <div className="pokemon-card__info">
-          <span className="pokemon-card__id">#{String(pokemon.id).padStart(3, '0')}</span>
-          <h3 className="pokemon-card__name">{pokemon.name}</h3>
+          <span className="pokemon-card__id">#{String(id).padStart(3, "0")}</span>
+          <h3 className="pokemon-card__name">{name}</h3>
           <div className="pokemon-card__types">
-            {types.map((type) => (
-              <PokemonType key={type} type={type} />
-            ))}
+            {types.length > 0 ? (
+              types.map((type) => <PokemonType key={type} type={type} />)
+            ) : (
+              <div className="pokemon-card__types-skeleton" />
+            )}
           </div>
         </div>
       </div>
