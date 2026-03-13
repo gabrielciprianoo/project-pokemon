@@ -1,0 +1,39 @@
+@import '../../../styles/variables';
+
+.filter-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $spacing-sm;
+  margin-bottom: 1rem;
+
+  &__btn {
+    padding: 8px 16px;
+    border-radius: $radius-full;
+    border: none;
+    cursor: pointer;
+    background: #333;
+    color: #ccc;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    &--active {
+      background: $color-primary;
+      color: white;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
+  }
+}
+
+@each $type, $bg in $type-colors {
+  $text: map-get($type-text-colors, $type);
+
+  .filter-grid__btn--#{$type}:hover {
+    background: $bg;
+    color: $text;
+  }
+}
