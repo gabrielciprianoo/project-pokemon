@@ -1,7 +1,8 @@
 import apiClient from './apiClient';
-import type { Pokemon, PokemonListItem, PokemonRegion } from '../types/pokemon';
+import type { PokemonRegion } from '../types/pokemon';
 import { GENERATION_TO_REGION } from '../constants/regions';
 import { safeValidatePokemon } from '../schemas/pokemon';
+import type { Pokemon, PokemonListItem } from '../schemas/pokemon';
 
 export async function getPokemon(name: string): Promise<Pokemon> {
   const response = await apiClient.get(`/pokemon/${name.toLowerCase()}`);
@@ -12,7 +13,9 @@ export async function fetchPokemonDetails(url: string): Promise<Pokemon> {
   const response = await apiClient.get(url);
   const validation = safeValidatePokemon(response.data);
   if (!validation.success) {
-    throw new Error("Invalid Pokemon data from API");
+    const firstIssue = validation.issues?.[0];
+    const path = firstIssue?.path?.map((p) => p.key).join(".") || "unknown";
+    throw new Error(`Validation failed at ${path}: ${firstIssue?.message || "Invalid data"}`);
   }
   return validation.output;
 }
