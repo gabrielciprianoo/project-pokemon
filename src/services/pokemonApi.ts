@@ -1,51 +1,14 @@
-export interface PokemonType {
-  type: {
-    name: string;
-    url: string;
-  };
-}
+import apiClient from './apiClient';
+import { validatePokemon, type Pokemon } from '../schemas';
 
-export interface PokemonAbility {
-  ability: {
-    name: string;
-    url: string;
-  };
-  is_hidden: boolean;
-}
-
-export interface PokemonStat {
-  stat: {
-    name: string;
-    url: string;
-  };
-  base_stat: number;
-}
-
-export interface Pokemon {
-  id: number;
-  name: string;
-  height: number;
-  weight: number;
-  types: PokemonType[];
-  abilities: PokemonAbility[];
-  stats: PokemonStat[];
-  sprites: {
-    other: {
-      'official-artwork': {
-        front_default: string;
-      };
-    };
-  };
-}
-
-const BASE_URL = 'https://pokeapi.co/api/v2';
-
+export type { Pokemon };
 export async function getPokemon(name: string): Promise<Pokemon> {
-  const response = await fetch(`${BASE_URL}/pokemon/${name.toLowerCase()}`);
-  
-  if (!response.ok) {
-    throw new Error(`Pokemon not found: ${name}`);
-  }
-  
-  return response.json();
+  const response = await apiClient.get(`/pokemon/${name.toLowerCase()}`);
+  return validatePokemon(response.data);
+}
+
+export async function getPokemonByUrl(url: string): Promise<Pokemon> {
+  const response = await fetch(url);
+  const data = await response.json();
+  return validatePokemon(data);
 }

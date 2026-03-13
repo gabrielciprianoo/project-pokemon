@@ -1,187 +1,35 @@
-import { useState, useEffect, useMemo } from "react";
+import { useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import type {
-  Pokemon,
-  PokemonListItem,
-  PokemonTypeName,
-  PokemonRegion,
-  PokemonSpecies
-}from "../types/pokemon";
+import { usePokemonStore, useFilterStore } from "../stores";
+import { POKEMON_TYPES, REGIONS, REGION_NAMES } from "../constants/pokemon";
 
 import styles from "./_HomePage.module.scss";
 
-const POKEAPI_BASE = "https://pokeapi.co/api/v2";
-
-const POKEMON_TYPES: PokemonTypeName[] = [
-  "normal",
-  "fire",
-  "water",
-  "electric",
-  "grass",
-  "ice",
-  "fighting",
-  "poison",
-  "ground",
-  "flying",
-  "psychic",
-  "bug",
-  "rock",
-  "ghost",
-  "dragon",
-  "dark",
-  "steel",
-  "fairy"
-];
-
-const GENERATION_TO_REGION: Record<string, PokemonRegion> = {
-  "generation-i": "kanto",
-  "generation-ii": "johto",
-  "generation-iii": "hoenn",
-  "generation-iv": "sinnoh",
-  "generation-v": "unova",
-  "generation-vi": "kalos",
-  "generation-vii": "alola",
-  "generation-viii": "galar",
-  "generation-ix": "paldea"
-};
-
-const REGIONS: PokemonRegion[] = [
-  "kanto",
-  "johto",
-  "hoenn",
-  "sinnoh",
-  "unova",
-  "kalos",
-  "alola",
-  "galar",
-  "paldea"
-];
-
-const REGION_NAMES: Record<PokemonRegion, string> = {
-  kanto: "Kanto",
-  johto: "Johto",
-  hoenn: "Hoenn",
-  sinnoh: "Sinnoh",
-  unova: "Unova",
-  kalos: "Kalos",
-  alola: "Alola",
-  galar: "Galar",
-  paldea: "Paldea"
-};
-
-/* ───────────────────────────────── */
-/* API FUNCTIONS */
-/* ───────────────────────────────── */
-
-async function fetchPokemonDetails(url: string): Promise<Pokemon> {
-  const response = await fetch(url);
-  return response.json();
-}
-
-async function fetchPokemonSpecies(url: string): Promise<PokemonSpecies> {
-  const response = await fetch(url);
-  return response.json();
-}
-
-async function fetchPokemonWithRegion(url: string): Promise<Pokemon> {
-  const pokemon = await fetchPokemonDetails(url);
-
-  try {
-    const species = await fetchPokemonSpecies(pokemon.species.url);
-    const generation = species.generation.name;
-    const region = GENERATION_TO_REGION[generation] || "kanto";
-
-    return { ...pokemon, region };
-  } catch {
-    return { ...pokemon, region: "kanto" };
-  }
-}
-
-async function fetchPokemonList(
-  offset: number = 0,
-  limit: number = 500
-): Promise<Pokemon[]> {
-  const response = await fetch(
-    `${POKEAPI_BASE}/pokemon?offset=${offset}&limit=${limit}`
-  );
-
-  const data = await response.json();
-
-  const detailedPromises = data.results.map((item: PokemonListItem) =>
-    fetchPokemonWithRegion(item.url)
-  );
-
-  return Promise.all(detailedPromises);
-}
-
-/* ───────────────────────────────── */
-/* COMPONENT */
-/* ───────────────────────────────── */
-
-export default function HomePage() {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [loading, setLoading] = useState(true);
+const HomePageContent = () => {
   const navigate = useNavigate();
+  
+  const { pokemons, loading, error, fetchPokemons } = usePokemonStore();
+  const {
+    searchTerm,
+    setSearchTerm,
+    selectedType,
+    selectedRegion,
+    activeFilter,
+    setSelectedType,
+    setSelectedRegion,
+    setActiveFilter,
+    getFilteredPokemons,
+  } = useFilterStore();
 
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const [selectedType, setSelectedType] =
-    useState<PokemonTypeName | null>(null);
-
-  const [selectedRegion, setSelectedRegion] =
-    useState<PokemonRegion | null>(null);
-
-  const [activeFilter, setActiveFilter] =
-    useState<"type" | "region">("type");
-
-  /* ───────────────────────────────── */
-  /* LOAD DATA */
-  /* ───────────────────────────────── */
+  const filteredPokemons = getFilteredPokemons(pokemons);
 
   useEffect(() => {
-    async function loadPokemons() {
-      setLoading(true);
-
-      try {
-        const data = await fetchPokemonList();
-        setPokemons(data);
-      } catch (error) {
-        console.error("Error loading pokemons:", error);
-      } finally {
-        setLoading(false);
-      }
+    if (pokemons.length === 0) {
+      fetchPokemons(500);
     }
+  }, [pokemons.length, fetchPokemons]);
 
-    loadPokemons();
-  }, []);
-
-  /* ───────────────────────────────── */
-  /* FILTER */
-  /* ───────────────────────────────── */
-
-  const filteredPokemons = useMemo(() => {
-    return pokemons.filter((pokemon) => {
-      const matchesSearch = pokemon.name
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase());
-
-      const matchesType = selectedType
-        ? pokemon.types.some((t) => t.type.name === selectedType)
-        : true;
-
-      const matchesRegion = selectedRegion
-        ? pokemon.region === selectedRegion
-        : true;
-
-      return matchesSearch && matchesType && matchesRegion;
-    });
-  }, [pokemons, searchTerm, selectedType, selectedRegion]);
-
-  /* ───────────────────────────────── */
-  /* LOADING */
-  /* ───────────────────────────────── */
-
-  if (loading) {
+  if (loading && pokemons.length === 0) {
     return (
       <div className={styles.loader}>
         <p>Cargando Pokémon...</p>
@@ -189,14 +37,16 @@ export default function HomePage() {
     );
   }
 
-  /* ───────────────────────────────── */
-  /* UI */
-  /* ───────────────────────────────── */
+  if (error) {
+    return (
+      <div className={styles.loader}>
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles["home-page"]}>
-      {/* SEARCH */}
-
       <div className={styles["search-bar"]}>
         <input
           className={styles["search-bar__input"]}
@@ -207,8 +57,6 @@ export default function HomePage() {
         />
       </div>
 
-      {/* FILTER TABS */}
-
       <div className={styles["filter-tabs"]}>
         <button
           className={`
@@ -217,7 +65,7 @@ export default function HomePage() {
           `}
           onClick={() => setActiveFilter("type")}
         >
-          🔥 Por Tipo
+          Por Tipo
         </button>
 
         <button
@@ -227,11 +75,9 @@ export default function HomePage() {
           `}
           onClick={() => setActiveFilter("region")}
         >
-          🗺️ Por Región
+          Por Región
         </button>
       </div>
-
-      {/* TYPE FILTER */}
 
       {activeFilter === "type" && (
         <div className={styles["filter-grid"]}>
@@ -263,8 +109,6 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* REGION FILTER */}
-
       {activeFilter === "region" && (
         <div className={styles["filter-grid"]}>
           <button
@@ -294,13 +138,9 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* RESULT COUNT */}
-
       <div className={styles["results-count"]}>
         Mostrando {filteredPokemons.length} Pokémon
       </div>
-
-      {/* GRID */}
 
       <div className={styles["pokemon-grid"]}>
         {filteredPokemons.map((pokemon) => (
@@ -320,6 +160,7 @@ export default function HomePage() {
                 pokemon.sprites.front_default
               }
               alt={pokemon.name}
+              loading="lazy"
             />
 
             <h3 className={styles["pokemon-card__name"]}>
@@ -348,18 +189,16 @@ export default function HomePage() {
 
             <div className={styles["pokemon-card__stats"]}>
               <span className={styles["pokemon-card__stat"]}>
-                📏 {pokemon.height / 10}m
+                {pokemon.height / 10}m
               </span>
 
               <span className={styles["pokemon-card__stat"]}>
-                ⚖️ {pokemon.weight / 10}kg
+                {pokemon.weight / 10}kg
               </span>
             </div>
           </div>
         ))}
       </div>
-
-      {/* EMPTY */}
 
       {filteredPokemons.length === 0 && (
         <p className={styles["no-results"]}>
@@ -368,4 +207,12 @@ export default function HomePage() {
       )}
     </div>
   );
-}
+};
+
+const HomePage = () => (
+  <Suspense fallback={<div className={styles.loader}><p>Cargando...</p></div>}>
+    <HomePageContent />
+  </Suspense>
+);
+
+export default HomePage;

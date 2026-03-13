@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   PokemonImage, 
@@ -6,33 +5,11 @@ import {
   PokemonInfoCard, 
   StatsSection 
 } from '../components';
-import { getPokemon, type Pokemon } from '../services/pokemonApi';
-import '../styles/main.scss';
+import { usePokemonDetail } from '../hooks';
 
 export default function PokemonDetailPage() {
   const { name } = useParams<{ name: string }>();
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!name) return;
-
-    const fetchPokemon = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getPokemon(name);
-        setPokemon(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load Pokemon');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPokemon();
-  }, [name]);
+  const { pokemon, loading, error } = usePokemonDetail({ name });
 
   if (loading) {
     return (
@@ -63,11 +40,11 @@ export default function PokemonDetailPage() {
   }
 
   const types = pokemon.types.map(t => t.type.name);
-  const abilities = pokemon.abilities.map(a => ({
+  const abilities = (pokemon.abilities || []).map(a => ({
     name: a.ability.name,
     isHidden: a.is_hidden,
   }));
-  const stats = pokemon.stats.map(s => ({
+  const stats = (pokemon.stats || []).map(s => ({
     name: s.stat.name,
     value: s.base_stat,
   }));
