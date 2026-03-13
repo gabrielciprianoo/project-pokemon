@@ -1,1 +1,1 @@
-export { usePokemonStore } from "../store/pokemonStore";
+export { pokemonQueries } from "./queryFactory";

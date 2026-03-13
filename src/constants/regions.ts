@@ -1,4 +1,4 @@
-import type { PokemonRegion } from "../types/pokemon";
+import type { PokemonRegion } from "../interfaces/pokemon";
 
 export const REGIONS: PokemonRegion[] = [
   "kanto",

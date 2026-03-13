@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { REGION_NAMES } from "../../../constants/regions";
-import type { Pokemon } from "../../../types/pokemon";
+import type { IPokemon } from "../../../interfaces/pokemon";
 import styles from "./PokemonCardHome.module.scss";
 
 interface PokemonCardHomeProps {
-  pokemon: Pokemon;
+  pokemon: IPokemon;
 }
 
 export default function PokemonCardHome({ pokemon }: PokemonCardHomeProps) {
@@ -22,7 +22,7 @@ export default function PokemonCardHome({ pokemon }: PokemonCardHomeProps) {
       <img
         className={styles["pokemon-card__image"]}
         src={
-          pokemon.sprites.other["official-artwork"].front_default ||
+          pokemon.sprites.official_artwork ||
           pokemon.sprites.front_default
         }
         alt={pokemon.name}
@@ -33,15 +33,15 @@ export default function PokemonCardHome({ pokemon }: PokemonCardHomeProps) {
       </h3>
 
       <div className={styles["pokemon-card__types"]}>
-        {pokemon.types.map(({ type }) => (
+        {pokemon.types.map((t) => (
           <span
-            key={type.name}
+            key={t.name}
             className={`
               ${styles["pokemon-card__type"]}
-              ${styles[`pokemon-card__type--${type.name}`]}
+              ${styles[`pokemon-card__type--${t.name}`]}
             `}
           >
-            {type.name}
+            {t.name}
           </span>
         ))}
       </div>

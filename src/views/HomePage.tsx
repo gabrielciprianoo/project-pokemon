@@ -1,34 +1,41 @@
-import { useEffect } from "react";
-
-import { usePokemonStore } from "../hooks";
+import { useState } from "react";
+import { pokemonQueries } from "../hooks";
 import { SearchBar, FilterTabs, FilterGrid } from "../components/molecules";
 import { PokemonCardHome, PokemonGrid } from "../components/organisms";
+import type { IPokemon } from "../interfaces/pokemon";
+
+type PokemonTypeName = "normal" | "fire" | "water" | "electric" | "grass" | "ice" | "fighting" | "poison" | "ground" | "flying" | "psychic" | "bug" | "rock" | "ghost" | "dragon" | "dark" | "steel" | "fairy";
+type PokemonRegion = "kanto" | "johto" | "hoenn" | "sinnoh" | "unova" | "kalos" | "alola" | "galar" | "paldea";
 
 import styles from "./_HomePage.module.scss";
 
 export default function HomePage() {
-  const {
-    loading,
-    error,
-    searchTerm,
-    filter,
-    fetchPokemons,
-    setSearchTerm,
-    toggleType,
-    toggleRegion,
-    setActiveFilter,
-    getFilteredPokemons
-  } = usePokemonStore();
+  const { data: pokemons, isLoading, error } = pokemonQueries.useGetAll();
 
-  const { selectedType, selectedRegion, activeFilter } = filter;
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedType, setSelectedType] = useState<PokemonTypeName | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<PokemonRegion | null>(null);
+  const [activeFilter, setActiveFilter] = useState<"type" | "region">("type");
 
-  useEffect(() => {
-    fetchPokemons();
-  }, [fetchPokemons]);
+  const toggleType = (type: PokemonTypeName) => {
+    setSelectedType((prev) => (prev === type ? null : type));
+  };
 
-  const filteredPokemons = getFilteredPokemons();
+  const toggleRegion = (region: PokemonRegion) => {
+    setSelectedRegion((prev) => (prev === region ? null : region));
+  };
 
-  if (loading) {
+  const filteredPokemons: IPokemon[] = pokemons?.filter((pokemon: IPokemon) => {
+    const matchesSearch = pokemon.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = selectedType
+      ? pokemon.types.some((t) => t.name === selectedType)
+      : true;
+    const matchesRegion = selectedRegion ? pokemon.region === selectedRegion : true;
+
+    return matchesSearch && matchesType && matchesRegion;
+  }) || [];
+
+  if (isLoading) {
     return (
       <div className={styles.loader}>
         <p>Cargando Pokémon...</p>
@@ -39,7 +46,7 @@ export default function HomePage() {
   if (error) {
     return (
       <div className={styles.loader}>
-        <p>Error: {error}</p>
+        <p>Error: {error.message}</p>
       </div>
     );
   }
@@ -78,7 +85,7 @@ export default function HomePage() {
       </div>
 
       <PokemonGrid>
-        {filteredPokemons.map((pokemon) => (
+        {filteredPokemons.map((pokemon: IPokemon) => (
           <PokemonCardHome key={pokemon.id} pokemon={pokemon} />
         ))}
       </PokemonGrid>
