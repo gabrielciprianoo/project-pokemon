@@ -89,4 +89,28 @@
     grid-template-columns: repeat(3, 1fr);
     gap: $spacing-md;
   }
+
+  &__loading,
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 40vh;
+    gap: $spacing-md;
+    color: $color-text-muted;
+    text-align: center;
+  }
+
+  &__error {
+    h2 {
+      color: $color-primary;
+      margin: 0;
+    }
+
+    p {
+      max-width: 400px;
+      font-size: 0.95rem;
+    }
+  }
 }
