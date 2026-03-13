@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { Pokemon } from '../schemas';
+import { getPokemonList } from '../services/pokemonService';
 
 interface PokemonStoreState {
   pokemons: Pokemon[];
@@ -8,15 +9,14 @@ interface PokemonStoreState {
   error: string | null;
   offset: number;
   hasMore: boolean;
+  fetchPokemons: (limit?: number) => Promise<void>;
   setPokemons: (pokemons: Pokemon[]) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   reset: () => void;
 }
 
-type PokemonStore = PokemonStoreState;
-
-const usePokemonStore = create<PokemonStore>()(
+const usePokemonStore = create<PokemonStoreState>()(
   devtools(
     (set) => ({
       pokemons: [],
@@ -25,6 +25,19 @@ const usePokemonStore = create<PokemonStore>()(
       offset: 0,
       hasMore: true,
 
+      fetchPokemons: async (limit = 500) => {
+        set({ loading: true, error: null });
+        try {
+          const pokemons = await getPokemonList(limit);
+          set({ pokemons, loading: false, hasMore: false });
+        } catch (error) {
+          set({ 
+            error: error instanceof Error ? error.message : 'Error desconocido', 
+            loading: false 
+          });
+        }
+      },
+      
       setPokemons: (pokemons) => set({ pokemons }),
       
       setLoading: (loading) => set({ loading }),

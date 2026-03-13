@@ -4,7 +4,7 @@ import axios, { type AxiosInstance, type AxiosError } from 'axios';
 import { ApiError, ValidationError, NetworkError, NotFoundError } from '../utils/errors';
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: 'https://pokeapi.co/api/v2',
+  baseURL: import.meta.env.VITE_POKEAPI_URL || 'https://pokeapi.co/api/v2',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
