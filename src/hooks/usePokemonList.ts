@@ -34,13 +34,27 @@ export function usePokemonList(initialLimit: number = 500): UsePokemonListResult
     activeFilter,
     setActiveFilter,
     clearFilters,
-    getFilteredPokemons,
   } = useFilterStore();
 
-  const filteredPokemons = useMemo(
-    () => getFilteredPokemons(pokemons),
-    [pokemons, getFilteredPokemons]
-  );
+  const filteredPokemons = useMemo(() => {
+    if (!pokemons.length) return [];
+    
+    return pokemons.filter((pokemon) => {
+      const matchesSearch = pokemon.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      const matchesType = selectedType
+        ? pokemon.types.some((t) => t.type.name === selectedType)
+        : true;
+
+      const matchesRegion = selectedRegion
+        ? pokemon.region === selectedRegion
+        : true;
+
+      return matchesSearch && matchesType && matchesRegion;
+    });
+  }, [pokemons, searchTerm, selectedType, selectedRegion]);
 
   const handleRefetch = useCallback(() => refetch(), [refetch]);
 
