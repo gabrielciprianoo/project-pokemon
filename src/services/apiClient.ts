@@ -4,8 +4,8 @@ import axios, { type AxiosInstance, type AxiosError } from 'axios';
 import { ApiError, ValidationError, NetworkError, NotFoundError } from '../utils/errors';
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_POKEAPI_URL || 'https://pokeapi.co/api/v2',
-  timeout: 10000,
+  baseURL: 'https://pokeapi.co/api/v2',
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -22,10 +22,11 @@ export async function fetchAndValidate<T>(
   schema: ValibotSchema<T>
 ): Promise<T> {
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, { timeout: 30000 });
     const result = v.safeParse(schema, response.data);
     
     if (!result.success) {
+      console.error('Validation error:', result.issues);
       throw new ValidationError('Error de validación de datos');
     }
     
@@ -59,6 +60,7 @@ export async function apiGet<T>(
     const result = v.safeParse(schema, response.data);
     
     if (!result.success) {
+      console.error('Validation error:', result.issues);
       throw new ValidationError('Error de validación de datos');
     }
     

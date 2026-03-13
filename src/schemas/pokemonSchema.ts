@@ -11,52 +11,75 @@ const PokemonRegionSchema = v.picklist([
   'kalos', 'alola', 'galar', 'paldea'
 ]);
 
+const nullableString = v.nullable(v.string());
+const optionalString = v.optional(nullableString, null);
+const optionalNumber = v.optional(v.number(), 0);
+const optionalBoolean = v.optional(v.boolean(), false);
+
 export const PokemonTypeSchema = v.object({
   slot: v.number(),
   type: v.object({
     name: PokemonTypeNameSchema,
-    url: v.string(),
+    url: optionalString,
   }),
 });
 
 export const PokemonAbilitySchema = v.object({
   ability: v.object({
-    name: v.string(),
-    url: v.string(),
+    name: optionalString,
+    url: optionalString,
   }),
-  is_hidden: v.boolean(),
-  slot: v.number(),
+  is_hidden: optionalBoolean,
+  slot: optionalNumber,
 });
 
 export const PokemonStatSchema = v.object({
-  base_stat: v.number(),
+  base_stat: optionalNumber,
   stat: v.object({
-    name: v.string(),
-    url: v.string(),
+    name: optionalString,
+    url: optionalString,
   }),
+});
+
+export const PokemonOfficialArtworkSchema = v.object({
+  front_default: optionalString,
+  front_shiny: optionalString,
+});
+
+export const PokemonOtherSpritesSchema = v.object({
+  'official-artwork': v.optional(PokemonOfficialArtworkSchema),
+  dream_world: v.optional(v.unknown()),
+  home: v.optional(v.unknown()),
+  'gen-fifth': v.optional(v.unknown()),
+  'gen-fourth': v.optional(v.unknown()),
+  'gen-third': v.optional(v.unknown()),
 });
 
 export const PokemonSpritesSchema = v.object({
-  front_default: v.string(),
-  other: v.object({
-    'official-artwork': v.object({
-      front_default: v.optional(v.string()),
-    }),
-  }),
+  front_default: optionalString,
+  back_default: optionalString,
+  front_shiny: optionalString,
+  back_shiny: optionalString,
+  front_female: optionalString,
+  back_female: optionalString,
+  front_shiny_female: optionalString,
+  back_shiny_female: optionalString,
+  other: v.optional(PokemonOtherSpritesSchema),
+  animated: v.optional(v.unknown()),
 });
 
 export const PokemonSpeciesRefSchema = v.object({
-  name: v.string(),
-  url: v.string(),
+  name: optionalString,
+  url: optionalString,
 });
 
 export const PokemonGenerationSchema = v.object({
-  name: v.string(),
-  url: v.string(),
+  name: optionalString,
+  url: optionalString,
 });
 
 export const PokemonSpeciesSchema = v.object({
-  generation: PokemonGenerationSchema,
+  generation: v.optional(PokemonGenerationSchema),
 });
 
 export type PokemonSpecies = v.InferOutput<typeof PokemonSpeciesSchema>;
@@ -66,9 +89,12 @@ export const PokemonSchema = v.object({
   name: v.string(),
   height: v.number(),
   weight: v.number(),
+  base_experience: optionalNumber,
+  is_default: optionalBoolean,
+  location_area_encounters: optionalString,
   types: v.array(PokemonTypeSchema),
-  sprites: PokemonSpritesSchema,
-  species: PokemonSpeciesRefSchema,
+  sprites: v.optional(PokemonSpritesSchema),
+  species: v.optional(PokemonSpeciesRefSchema),
   abilities: v.optional(v.array(PokemonAbilitySchema)),
   stats: v.optional(v.array(PokemonStatSchema)),
   region: v.optional(PokemonRegionSchema),
@@ -81,8 +107,8 @@ export const PokemonListItemSchema = v.object({
 
 export const PokemonListResponseSchema = v.object({
   count: v.number(),
-  next: v.optional(v.string()),
-  previous: v.optional(v.string()),
+  next: optionalString,
+  previous: optionalString,
   results: v.array(PokemonListItemSchema),
 });
 

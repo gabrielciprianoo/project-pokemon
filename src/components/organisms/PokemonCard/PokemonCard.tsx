@@ -8,8 +8,8 @@ interface PokemonCardProps {
 }
 
 export default function PokemonCard({ pokemon }: PokemonCardProps) {
-  const types = pokemon.types.map(t => t.type.name);
-  const imageUrl = pokemon.sprites.other['official-artwork'].front_default;
+  const types = (pokemon.types || []).map(t => t.type.name);
+  const imageUrl = pokemon.sprites?.other?.['official-artwork']?.front_default || pokemon.sprites?.front_default || '';
 
   return (
     <Link 

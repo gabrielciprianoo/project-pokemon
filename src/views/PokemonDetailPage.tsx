@@ -39,18 +39,18 @@ export default function PokemonDetailPage() {
     );
   }
 
-  const types = pokemon.types.map(t => t.type.name);
+  const types = (pokemon.types || []).map(t => t.type.name);
   const abilities = (pokemon.abilities || []).map(a => ({
-    name: a.ability.name,
-    isHidden: a.is_hidden,
+    name: a.ability.name || '',
+    isHidden: a.is_hidden || false,
   }));
   const stats = (pokemon.stats || []).map(s => ({
-    name: s.stat.name,
-    value: s.base_stat,
+    name: s.stat.name || '',
+    value: s.base_stat || 0,
   }));
   const baseStatTotal = stats.reduce((sum, stat) => sum + stat.value, 0);
 
-  const imageUrl = pokemon.sprites.other['official-artwork'].front_default;
+  const imageUrl = pokemon.sprites?.other?.['official-artwork']?.front_default || pokemon.sprites?.front_default || '';
 
   return (
     <div className="pokemon-detail">

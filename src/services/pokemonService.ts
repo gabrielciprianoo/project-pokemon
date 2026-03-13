@@ -11,14 +11,15 @@ import {
 import { GENERATION_TO_REGION, API_CONFIG } from '../constants/pokemon';
 
 async function fetchWithLimit<T>(
-  urls: string[],
+  urls: (string | null | undefined)[],
   limit: number,
   fetcher: (url: string) => Promise<T>
 ): Promise<T[]> {
   const results: T[] = [];
+  const validUrls = urls.filter((url): url is string => typeof url === 'string');
   
-  for (let i = 0; i < urls.length; i += limit) {
-    const batch = urls.slice(i, i + limit);
+  for (let i = 0; i < validUrls.length; i += limit) {
+    const batch = validUrls.slice(i, i + limit);
     const batchResults = await Promise.all(batch.map(fetcher));
     results.push(...batchResults);
   }
@@ -30,11 +31,19 @@ async function fetchPokemonData(url: string): Promise<Pokemon> {
   const pokemon = await fetchAndValidate<Pokemon>(url, PokemonSchema);
   
   try {
+    const speciesUrl = pokemon.species?.url;
+    if (!speciesUrl) {
+      return { ...pokemon, region: 'kanto' };
+    }
+    
     const species = await fetchAndValidate<PokemonSpecies>(
-      pokemon.species.url, 
+      speciesUrl, 
       PokemonSpeciesSchema
     );
-    const generation = species.generation.name;
+    const generation = species.generation?.name;
+    if (!generation) {
+      return { ...pokemon, region: 'kanto' };
+    }
     const region = GENERATION_TO_REGION[generation] || 'kanto';
     return { ...pokemon, region };
   } catch {
@@ -48,7 +57,7 @@ export async function getPokemonList(limit: number = API_CONFIG.DEFAULT_LIMIT): 
     PokemonListResponseSchema
   );
   
-  const urls = data.results.map((item) => item.url);
+  const urls = data.results?.map((item) => item.url) || [];
 
   return fetchWithLimit(
     urls,

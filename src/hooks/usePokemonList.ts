@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useCallback } from 'react';
-import { usePokemonStore, useFilterStore } from '../stores';
+import { useMemo, useCallback } from 'react';
+import { useFilterStore } from '../stores';
+import { usePokemonQuery } from './usePokemonQuery';
 import type { Pokemon, PokemonTypeName, PokemonRegion } from '../schemas';
 
 export type FilterType = 'type' | 'region';
@@ -8,7 +9,7 @@ export interface UsePokemonListResult {
   loading: boolean;
   error: string | null;
   filteredPokemons: Pokemon[];
-  refetch: () => Promise<void>;
+  refetch: () => Promise<unknown>;
   searchTerm: string;
   selectedType: PokemonTypeName | null;
   selectedRegion: PokemonRegion | null;
@@ -21,7 +22,7 @@ export interface UsePokemonListResult {
 }
 
 export function usePokemonList(initialLimit: number = 500): UsePokemonListResult {
-  const { pokemons, loading, error, fetchPokemons } = usePokemonStore();
+  const { pokemons, loading, error, refetch } = usePokemonQuery({ limit: initialLimit });
   
   const {
     searchTerm,
@@ -41,19 +42,13 @@ export function usePokemonList(initialLimit: number = 500): UsePokemonListResult
     [pokemons, getFilteredPokemons]
   );
 
-  useEffect(() => {
-    if (pokemons.length === 0) {
-      fetchPokemons(initialLimit);
-    }
-  }, [pokemons.length, fetchPokemons, initialLimit]);
-
-  const refetch = useCallback(() => fetchPokemons(initialLimit), [fetchPokemons, initialLimit]);
+  const handleRefetch = useCallback(() => refetch(), [refetch]);
 
   return {
     loading,
     error,
     filteredPokemons,
-    refetch,
+    refetch: handleRefetch,
     searchTerm,
     selectedType,
     selectedRegion,

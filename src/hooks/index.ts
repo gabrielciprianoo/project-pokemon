@@ -8,3 +8,5 @@ export type { UsePokemonDetailOptions, UsePokemonDetailResult } from './usePokem
 
 export { usePokemonList } from './usePokemonList';
 export type { FilterType, UsePokemonListResult } from './usePokemonList';
+
+export { usePokemonQuery } from './usePokemonQuery';

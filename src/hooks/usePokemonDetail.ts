@@ -37,9 +37,19 @@ export function usePokemonDetail(
       const data = await getPokemon(name.toLowerCase());
       
       try {
-        const speciesResponse = await fetch(data.species.url);
+        const speciesUrl = data.species?.url;
+        if (!speciesUrl) {
+          setPokemon(data);
+          return;
+        }
+        
+        const speciesResponse = await fetch(speciesUrl);
         const species: PokemonSpecies = await speciesResponse.json();
-        const generation = species.generation.name;
+        const generation = species.generation?.name;
+        if (!generation) {
+          setPokemon(data);
+          return;
+        }
         const region = GENERATION_TO_REGION[generation] || 'kanto';
         
         setPokemon({ ...data, region });
