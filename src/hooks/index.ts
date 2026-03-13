@@ -5,3 +5,6 @@ export { usePokemon } from './usePokemon';
 
 export { usePokemonDetail } from './usePokemonDetail';
 export type { UsePokemonDetailOptions, UsePokemonDetailResult } from './usePokemonDetail';
+
+export { usePokemonList } from './usePokemonList';
+export type { FilterType, UsePokemonListResult } from './usePokemonList';

@@ -1,6 +1,6 @@
 import type { PokemonTypeName, PokemonRegion } from '../schemas';
 
-export const POKEAPI_BASE = 'https://pokeapi.co/api/v2';
+export const POKEAPI_BASE = import.meta.env.VITE_POKEAPI_URL;
 
 export const GENERATION_TO_REGION: Record<string, PokemonRegion> = {
   'generation-i': 'kanto',

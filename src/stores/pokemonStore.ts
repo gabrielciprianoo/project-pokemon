@@ -1,23 +1,8 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { validatePokemon, type Pokemon, type PokemonRegion } from '../schemas';
-import { POKEAPI_BASE, GENERATION_TO_REGION, API_CONFIG } from '../constants/pokemon';
-
-async function fetchWithLimit<T>(
-  urls: string[],
-  limit: number,
-  fetcher: (url: string) => Promise<T>
-): Promise<T[]> {
-  const results: T[] = [];
-  
-  for (let i = 0; i < urls.length; i += limit) {
-    const batch = urls.slice(i, i + limit);
-    const batchResults = await Promise.all(batch.map(fetcher));
-    results.push(...batchResults);
-  }
-  
-  return results;
-}
+import { getPokemonList } from '../services/pokemonService';
+import { API_CONFIG } from '../constants/pokemon';
+import type { Pokemon } from '../schemas';
 
 interface PokemonStoreState {
   pokemons: Pokemon[];
@@ -50,35 +35,12 @@ const usePokemonStore = create<PokemonStore>()(
           try {
             set({ loading: true, error: null }, false, 'fetchPokemons');
             
-            const response = await fetch(`${POKEAPI_BASE}/pokemon?offset=0&limit=${limit}`);
-            const data = await response.json();
-            const urls = data.results.map((item: { url: string }) => item.url);
-
-            const fetchPokemonData = async (url: string): Promise<Pokemon> => {
-              const pokemonResponse = await fetch(url);
-              const pokemon = validatePokemon(await pokemonResponse.json());
-              
-              try {
-                const speciesResponse = await fetch(pokemon.species.url);
-                const species = await speciesResponse.json();
-                const generation = species.generation.name;
-                const region = GENERATION_TO_REGION[generation] || 'kanto';
-                return { ...pokemon, region };
-              } catch {
-                return { ...pokemon, region: 'kanto' as PokemonRegion };
-              }
-            };
-
-            const pokemons = await fetchWithLimit(
-              urls,
-              API_CONFIG.MAX_CONCURRENT_REQUESTS,
-              fetchPokemonData
-            );
+            const pokemons = await getPokemonList(limit);
 
             set({ 
               pokemons, 
               offset: limit, 
-              hasMore: data.results.length === limit,
+              hasMore: pokemons.length === limit,
               loading: false 
             }, false, 'fetchPokemons/success');
           } catch (err) {
