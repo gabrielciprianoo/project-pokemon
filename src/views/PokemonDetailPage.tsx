@@ -1,46 +1,22 @@
-import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { 
-  PokemonImage, 
-  PokemonHeader, 
-  PokemonInfoCard, 
-  StatsSection 
+import { usePokemonDetail } from '../hooks';
+import {
+  PokemonImage,
+  PokemonHeader,
+  PokemonInfoCard,
+  StatsSection
 } from '../components';
-import { getPokemon, type Pokemon } from '../services/pokemonApi';
 import '../styles/main.scss';
 
 export default function PokemonDetailPage() {
   const { name } = useParams<{ name: string }>();
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: pokemon, isLoading, error } = usePokemonDetail(name ?? "");
 
-  useEffect(() => {
-    if (!name) return;
-
-    const fetchPokemon = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getPokemon(name);
-        setPokemon(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load Pokemon');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPokemon();
-  }, [name]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="pokemon-detail">
         <div className="pokemon-detail__container">
-          <div className="pokemon-detail__loading">
-            Loading...
-          </div>
+          <div className="pokemon-detail__loading">Loading...</div>
         </div>
       </div>
     );
@@ -50,65 +26,47 @@ export default function PokemonDetailPage() {
     return (
       <div className="pokemon-detail">
         <div className="pokemon-detail__container">
-          <Link to="/" className="pokemon-detail__back">
-            ← Back to Pokedex
-          </Link>
+          <Link to="/" className="pokemon-detail__back">← Back to Pokedex</Link>
           <div className="pokemon-detail__error">
             <h2>Error</h2>
-            <p>{error || 'Pokemon not found'}</p>
+            <p>{error?.message ?? 'Pokemon not found'}</p>
           </div>
         </div>
       </div>
     );
   }
 
-  const types = pokemon.types.map(t => t.type.name);
-  const abilities = pokemon.abilities.map(a => ({
+  const types = pokemon.types.map((t) => t.type.name);
+  const abilities = pokemon.abilities.map((a) => ({
     name: a.ability.name,
     isHidden: a.is_hidden,
   }));
-  const stats = pokemon.stats.map(s => ({
+  const stats = pokemon.stats.map((s) => ({
     name: s.stat.name,
     value: s.base_stat,
   }));
   const baseStatTotal = stats.reduce((sum, stat) => sum + stat.value, 0);
-
   const imageUrl = pokemon.sprites.other['official-artwork'].front_default;
 
   return (
     <div className="pokemon-detail">
       <div className="pokemon-detail__container">
-        <Link to="/" className="pokemon-detail__back">
-          ← Back to Pokedex
-        </Link>
-        
+        <Link to="/" className="pokemon-detail__back">← Back to Pokedex</Link>
+
         <div className="pokemon-detail__content">
           <div className="pokemon-detail__image-section">
-            <PokemonImage 
-              name={pokemon.name} 
-              image={imageUrl}
-              isLarge={true}
-            />
+            <PokemonImage name={pokemon.name} image={imageUrl || ""} isLarge={true} />
           </div>
-          
+
           <div className="pokemon-detail__info-section">
-            <PokemonHeader 
-              name={pokemon.name}
-              id={pokemon.id}
-              types={types}
-            />
-            
+            <PokemonHeader name={pokemon.name} id={pokemon.id} types={types} />
             <PokemonInfoCard
               height={pokemon.height}
               weight={pokemon.weight}
               types={types}
               abilities={abilities}
             />
-            
-            <StatsSection 
-              stats={stats}
-              baseStatTotal={baseStatTotal}
-            />
+            <StatsSection stats={stats} baseStatTotal={baseStatTotal} />
           </div>
         </div>
       </div>
