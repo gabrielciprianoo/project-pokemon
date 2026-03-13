@@ -1,8 +1,10 @@
 export type PokemonRegion = "kanto" | "johto" | "hoenn" | "sinnoh" | "unova" | "kalos" | "alola" | "galar" | "paldea";
 
+export type PokemonTypeName = "normal" | "fire" | "water" | "electric" | "grass" | "ice" | "fighting" | "poison" | "ground" | "flying" | "psychic" | "bug" | "rock" | "ghost" | "dragon" | "dark" | "steel" | "fairy";
+
 export interface IPokemonType {
   slot: number;
-  name: string;
+  name: PokemonTypeName;
   url: string;
 }
 

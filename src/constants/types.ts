@@ -1,4 +1,4 @@
-import type { PokemonTypeName } from "../types/pokemon";
+import type { PokemonTypeName } from "../interfaces/pokemon";
 
 export const POKEMON_TYPES: PokemonTypeName[] = [
   "normal",

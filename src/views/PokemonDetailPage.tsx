@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
   PokemonImage, 
@@ -6,36 +5,14 @@ import {
   PokemonInfoCard, 
   StatsSection 
 } from '../components';
-import { getPokemon } from '../services/pokemonApi';
-import type { Pokemon } from '../types/pokemon';
+import { pokemonQueries } from '../hooks';
 import '../styles/main.scss';
 
 export default function PokemonDetailPage() {
   const { name } = useParams<{ name: string }>();
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: pokemon, isLoading, error } = pokemonQueries.useGetByName(name || "");
 
-  useEffect(() => {
-    if (!name) return;
-
-    const fetchPokemon = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getPokemon(name);
-        setPokemon(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load Pokemon');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPokemon();
-  }, [name]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="pokemon-detail">
         <div className="pokemon-detail__container">
@@ -56,14 +33,14 @@ export default function PokemonDetailPage() {
           </Link>
           <div className="pokemon-detail__error">
             <h2>Error</h2>
-            <p>{error || 'Pokemon not found'}</p>
+            <p>{error?.message || 'Pokemon not found'}</p>
           </div>
         </div>
       </div>
     );
   }
 
-  const types = pokemon.types.map(t => t.type.name);
+  const types = pokemon.types.map(t => t.name);
   const abilities = pokemon.abilities.map(a => ({
     name: a.ability.name,
     isHidden: a.is_hidden,
@@ -74,7 +51,7 @@ export default function PokemonDetailPage() {
   }));
   const baseStatTotal = stats.reduce((sum, stat) => sum + stat.value, 0);
 
-  const imageUrl = pokemon.sprites.other['official-artwork'].front_default;
+  const imageUrl = pokemon.sprites.official_artwork || pokemon.sprites.front_default;
 
   return (
     <div className="pokemon-detail">

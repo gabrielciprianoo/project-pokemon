@@ -1,6 +1,6 @@
 import { POKEMON_TYPES } from "../../../constants/types";
 import { REGIONS, REGION_NAMES } from "../../../constants/regions";
-import type { PokemonTypeName, PokemonRegion } from "../../../types/pokemon";
+import type { PokemonTypeName, PokemonRegion } from "../../../interfaces/pokemon";
 import styles from "./FilterGrid.module.scss";
 
 interface FilterGridProps {

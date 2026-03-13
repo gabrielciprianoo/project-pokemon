@@ -2,10 +2,7 @@ import { useState } from "react";
 import { pokemonQueries } from "../hooks";
 import { SearchBar, FilterTabs, FilterGrid } from "../components/molecules";
 import { PokemonCardHome, PokemonGrid } from "../components/organisms";
-import type { IPokemon } from "../interfaces/pokemon";
-
-type PokemonTypeName = "normal" | "fire" | "water" | "electric" | "grass" | "ice" | "fighting" | "poison" | "ground" | "flying" | "psychic" | "bug" | "rock" | "ghost" | "dragon" | "dark" | "steel" | "fairy";
-type PokemonRegion = "kanto" | "johto" | "hoenn" | "sinnoh" | "unova" | "kalos" | "alola" | "galar" | "paldea";
+import type { IPokemon, PokemonTypeName, PokemonRegion } from "../interfaces/pokemon";
 
 import styles from "./_HomePage.module.scss";
 
