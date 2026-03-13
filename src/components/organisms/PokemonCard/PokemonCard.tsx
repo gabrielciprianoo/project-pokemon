@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { PokemonImage, PokemonType } from '../../atoms';
-import type { Pokemon } from '../../../services/pokemonApi';
+import type { Pokemon } from '../../../types/pokemon';
 import './PokemonCard.scss';
 
 interface PokemonCardProps {

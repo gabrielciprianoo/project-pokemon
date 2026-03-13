@@ -6,7 +6,8 @@ import {
   PokemonInfoCard, 
   StatsSection 
 } from '../components';
-import { getPokemon, type Pokemon } from '../services/pokemonApi';
+import { getPokemon } from '../services/pokemonApi';
+import type { Pokemon } from '../types/pokemon';
 import '../styles/main.scss';
 
 export default function PokemonDetailPage() {

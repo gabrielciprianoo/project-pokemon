@@ -41,6 +41,23 @@ const PokemonTypeSchema = v.object({
   }),
 });
 
+const PokemonAbilitySchema = v.object({
+  ability: v.object({
+    name: v.string(),
+    url: v.string(),
+  }),
+  is_hidden: v.boolean(),
+  slot: v.number(),
+});
+
+const PokemonStatSchema = v.object({
+  base_stat: v.number(),
+  stat: v.object({
+    name: v.string(),
+    url: v.string(),
+  }),
+});
+
 const PokemonSpritesSchema = v.object({
   front_default: v.string(),
   other: v.object({
@@ -56,6 +73,8 @@ export const PokemonSchema = v.object({
   height: v.number(),
   weight: v.number(),
   types: v.array(PokemonTypeSchema),
+  abilities: v.array(PokemonAbilitySchema),
+  stats: v.array(PokemonStatSchema),
   sprites: PokemonSpritesSchema,
   species: v.object({
     name: v.string(),

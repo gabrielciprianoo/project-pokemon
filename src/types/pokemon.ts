@@ -38,6 +38,8 @@ export interface Pokemon {
   height: number;
   weight: number;
   types: PokemonType[];
+  abilities: PokemonAbility[];
+  stats: PokemonStat[];
   sprites: {
     front_default: string;
     other: {
