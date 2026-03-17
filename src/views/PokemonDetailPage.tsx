@@ -1,9 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
-import { 
-  PokemonImage, 
-  PokemonHeader, 
-  PokemonInfoCard, 
-  StatsSection 
+import {
+  PokemonImage,
+  PokemonHeader,
+  PokemonInfoCard,
+  StatsSection
 } from '../components';
 import { pokemonQueries } from '../hooks';
 import '../styles/main.scss';
@@ -68,7 +68,7 @@ export default function PokemonDetailPage() {
               isLarge={true}
             />
           </div>
-          
+            
           <div className="pokemon-detail__info-section">
             <PokemonHeader 
               name={pokemon.name}
