@@ -1,0 +1,1 @@
+export { usePokemonStore } from "./pokemonStore";
