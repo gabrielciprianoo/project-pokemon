@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { Pokemon, PokemonTypeName, PokemonRegion } from '../schemas';
+import type { IPokemon, PokemonTypeName, PokemonRegion } from '../types';
 
 export type FilterType = 'type' | 'region';
 
@@ -19,7 +19,7 @@ interface FilterStoreActions {
   toggleType: (type: PokemonTypeName) => void;
   toggleRegion: (region: PokemonRegion) => void;
   clearFilters: () => void;
-  getFilteredPokemons: (pokemons: Pokemon[]) => Pokemon[];
+  getFilteredPokemons: (pokemons: IPokemon[]) => IPokemon[];
 }
 
 type FilterStore = FilterStoreState & FilterStoreActions;

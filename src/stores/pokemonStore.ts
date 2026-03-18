@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import type { Pokemon } from '../schemas';
-import { getPokemonList } from '../services/pokemonService';
+import type { IPokemon } from '../types';
+import { pokemonRepository } from '../repositories';
 
 interface PokemonStoreState {
-  pokemons: Pokemon[];
+  pokemons: IPokemon[];
   loading: boolean;
   error: string | null;
   offset: number;
   hasMore: boolean;
   fetchPokemons: (limit?: number) => Promise<void>;
-  setPokemons: (pokemons: Pokemon[]) => void;
+  setPokemons: (pokemons: IPokemon[]) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   reset: () => void;
@@ -28,7 +28,7 @@ const usePokemonStore = create<PokemonStoreState>()(
       fetchPokemons: async (limit = 500) => {
         set({ loading: true, error: null });
         try {
-          const pokemons = await getPokemonList(limit);
+          const pokemons = await pokemonRepository.getPokemonList({ limit });
           set({ pokemons, loading: false, hasMore: false });
         } catch (error) {
           set({ 

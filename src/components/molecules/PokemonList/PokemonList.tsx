@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { REGION_NAMES } from '../../../constants/pokemon';
-import type { Pokemon } from '../../../schemas';
+import type { IPokemon } from '../../../types';
 import styles from './PokemonList.module.scss';
 
 interface PokemonListProps {
-  pokemons: Pokemon[];
+  pokemons: IPokemon[];
 }
 
 export default function PokemonList({ pokemons }: PokemonListProps) {

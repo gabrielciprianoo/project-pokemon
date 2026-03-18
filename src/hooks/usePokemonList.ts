@@ -1,14 +1,14 @@
 import { useMemo, useCallback } from 'react';
 import { useFilterStore } from '../stores';
 import { usePokemonQuery } from './usePokemonQuery';
-import type { Pokemon, PokemonTypeName, PokemonRegion } from '../schemas';
+import type { PokemonTypeName, PokemonRegion, IPokemon } from '../types';
 
 export type FilterType = 'type' | 'region';
 
 export interface UsePokemonListResult {
   loading: boolean;
   error: string | null;
-  filteredPokemons: Pokemon[];
+  filteredPokemons: IPokemon[];
   refetch: () => Promise<unknown>;
   searchTerm: string;
   selectedType: PokemonTypeName | null;

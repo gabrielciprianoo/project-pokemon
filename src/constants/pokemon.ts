@@ -1,4 +1,4 @@
-import type { PokemonTypeName, PokemonRegion } from '../schemas';
+import type { PokemonTypeName, PokemonRegion } from '../types';
 
 export const POKEAPI_BASE = import.meta.env.VITE_POKEAPI_URL;
 

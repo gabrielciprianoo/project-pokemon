@@ -1,6 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getPokemonList } from '../services/pokemonService';
-import type { Pokemon } from '../schemas';
+import { usePokemonListQuery } from '../factories';
+import type { IPokemon } from '../types';
 
 interface UsePokemonQueryOptions {
   limit?: number;
@@ -8,16 +7,10 @@ interface UsePokemonQueryOptions {
 }
 
 export function usePokemonQuery({ limit = 500, enabled = true }: UsePokemonQueryOptions = {}) {
-  const { data, isLoading, error, refetch, isFetching } = useQuery<Pokemon[], Error>({
-    queryKey: ['pokemons', limit],
-    queryFn: () => getPokemonList(limit),
-    enabled,
-    staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-  });
+  const { data, isLoading, error, refetch, isFetching } = usePokemonListQuery({ limit, enabled });
 
   return {
-    pokemons: data || [],
+    pokemons: (data as IPokemon[]) || [],
     loading: isLoading,
     fetching: isFetching,
     error: error?.message || null,

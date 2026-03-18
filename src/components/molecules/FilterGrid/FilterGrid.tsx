@@ -1,6 +1,6 @@
 import styles from './FilterGrid.module.scss';
 import { POKEMON_TYPES, REGIONS, REGION_NAMES } from '../../../constants/pokemon';
-import type { PokemonTypeName, PokemonRegion } from '../../../schemas';
+import type { PokemonTypeName, PokemonRegion } from '../../../types';
 
 interface FilterGridProps {
   activeFilter: 'type' | 'region';

@@ -1,77 +1,27 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getPokemon, type Pokemon } from '../services/pokemonApi';
-import { GENERATION_TO_REGION } from '../constants/pokemon';
-import type { PokemonRegion, PokemonSpecies } from '../schemas';
-
-interface PokemonWithRegion extends Pokemon {
-  region?: PokemonRegion;
-}
+import { usePokemonByNameQuery } from '../factories';
+import type { IPokemon } from '../types';
 
 export interface UsePokemonDetailOptions {
   name: string | undefined;
 }
 
 export interface UsePokemonDetailResult {
-  pokemon: PokemonWithRegion | null;
+  pokemon: IPokemon | null;
   loading: boolean;
   error: string | null;
-  refetch: () => Promise<void>;
+  refetch: () => Promise<unknown>;
 }
 
 export function usePokemonDetail(
   options: UsePokemonDetailOptions
 ): UsePokemonDetailResult {
   const { name } = options;
-
-  const [pokemon, setPokemon] = useState<PokemonWithRegion | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchPokemon = useCallback(async () => {
-    if (!name) return;
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const data = await getPokemon(name.toLowerCase());
-      
-      try {
-        const speciesUrl = data.species?.url;
-        if (!speciesUrl) {
-          setPokemon(data);
-          return;
-        }
-        
-        const speciesResponse = await fetch(speciesUrl);
-        const species: PokemonSpecies = await speciesResponse.json();
-        const generation = species.generation?.name;
-        if (!generation) {
-          setPokemon(data);
-          return;
-        }
-        const region = GENERATION_TO_REGION[generation] || 'kanto';
-        
-        setPokemon({ ...data, region });
-      } catch {
-        setPokemon(data);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load Pokemon');
-      setPokemon(null);
-    } finally {
-      setLoading(false);
-    }
-  }, [name]);
-
-  useEffect(() => {
-    fetchPokemon();
-  }, [fetchPokemon]);
+  const { data, isLoading, error, refetch } = usePokemonByNameQuery(name);
 
   return {
-    pokemon,
-    loading,
-    error,
-    refetch: fetchPokemon,
+    pokemon: data || null,
+    loading: isLoading,
+    error: error?.message || null,
+    refetch,
   };
 }

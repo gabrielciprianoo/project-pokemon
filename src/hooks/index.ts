@@ -10,3 +10,5 @@ export { usePokemonList } from './usePokemonList';
 export type { FilterType, UsePokemonListResult } from './usePokemonList';
 
 export { usePokemonQuery } from './usePokemonQuery';
+
+export { queryFactory, usePokemonListQuery, usePokemonByNameQuery, usePokemonByUrlQuery } from '../factories';
